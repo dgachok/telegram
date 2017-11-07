@@ -2,7 +2,6 @@ import {combineReducers} from 'redux';
 import {LOADING_STARTED, LOADING_ENDED, LOAD_USER_ACTION, LOADED_USER_ACTION} from "./AppActions";
 
 const loading = (state = false, action) => {
-    console.log('action loading', action);
     switch (action.type) {
         case LOADING_STARTED:
             return true;

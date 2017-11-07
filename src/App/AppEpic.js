@@ -12,15 +12,22 @@ import {
     loadingStarted, loadedUser, fetchUser, loadingEnded
 } from "./AppActions";
 
-const userEpic = () => {
+const spinner = (funcion) => {
     return Observable
         .concat(
             Observable.of(loadingStarted()),
-            Observable
-                .fromPromise(fetchUser())
-                .delay(5000)
-                .flatMap((data) => [loadedUser(data), loadingEnded()])
+            funcion,
+            Observable.of(loadingEnded())
         )
+};
+
+const userEpic = () => {
+    return spinner(
+        Observable
+            .fromPromise(fetchUser())
+            .delay(5000)
+            .map(loadedUser)
+    );
 };
 
 export const epic = combineEpics(
