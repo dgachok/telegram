@@ -1,33 +1,28 @@
 import {combineEpics} from 'redux-observable';
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/concat';
 import {
-    loadingStarted, loadingEnded, loadedUser, fetchUser,
-    LOAD_USER_ACTION, LOADED_USER_ACTION
+    loadingStarted, loadedUser, fetchUser, loadingEnded
 } from "./AppActions";
 
-const userEpic = ($actions) => {
-    return $actions.ofType(LOAD_USER_ACTION)
-        .mergeMap(() => {
-            return Observable
+const userEpic = () => {
+    return Observable
+        .concat(
+            Observable.of(loadingStarted()),
+            Observable
                 .fromPromise(fetchUser())
-                .map(loadedUser)
-        });
+                .delay(5000)
+                .flatMap((data) => [loadedUser(data), loadingEnded()])
+        )
 };
-
-const loadingStartedEpic = ($actions) => {
-    return $actions.ofType(LOAD_USER_ACTION)
-        .map(loadingStarted);
-};
-
-const loadingEndedEpic = ($actions) => {
-    return $actions.ofType(LOADED_USER_ACTION)
-        .map(loadingEnded);
-};
-
 
 export const epic = combineEpics(
-    userEpic,
-    loadingStartedEpic,
-    loadingEndedEpic
+    userEpic
 );

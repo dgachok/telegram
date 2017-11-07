@@ -7,24 +7,19 @@ import './styles.css';
 
 export default class AppComponent extends Component {
     static propTypes = {
-        load: PropTypes.func,
-        user: PropTypes.object,
         loading: PropTypes.bool
     };
 
-    componentDidMount () {
-        console.log('this.props', this.props);
-    }
-
     render () {
         const {user, loading} = this.props;
+        console.log('this.props', this.props);
         return (
             <div className="container-fluid">
                 {
                     loading
                         ? <h1>loading</h1>
                         : <Switch>
-                            <Route exact path="/" render={() => <Redirect to={user ? "/user" : "/auth"}/>}/>
+                            <Route exact path="/" render={() => <Redirect to={user.id ? "/user" : "/auth"}/>}/>
                             <Route path="/user" render={() => <User user={user} />}/>
                             <Route path="/auth" component={Auth}/>
                           </Switch>

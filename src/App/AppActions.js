@@ -12,9 +12,6 @@ export const loadingEnded = () => ({
     type: LOADING_ENDED,
 });
 
-export const loadUser = () => ({
-    type: LOAD_USER_ACTION,
-});
 
 export const loadedUser = (user) => ({
     type: LOADED_USER_ACTION,
@@ -22,8 +19,8 @@ export const loadedUser = (user) => ({
 });
 
 export const fetchUser = () => {
+    console.log('fetchUser');
     return new Promise((resolve, reject) => {
-        console.log('fetchUser');
         resolve({name: 'admin', id: 1});
     });
 };
