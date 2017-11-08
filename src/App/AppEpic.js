@@ -12,7 +12,7 @@ import {
     loadingStarted, loadedUser, fetchUser, loadingEnded
 } from "./AppActions";
 
-const spinner = (funcion) => {
+const loading = (funcion) => {
     return Observable
         .concat(
             Observable.of(loadingStarted()),
@@ -22,7 +22,7 @@ const spinner = (funcion) => {
 };
 
 const userEpic = () => {
-    return spinner(
+    return loading(
         Observable
             .fromPromise(fetchUser())
             .delay(5000)
